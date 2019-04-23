@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const asyncWrapper = require('../utilities/async-wrapper').AsyncWrapper
 const plansService = require('../services/plans-services')
+const validator = require('../middleware/validator')
 
 router.get('/', asyncWrapper(async (req,res)=>{
   let userId = null
@@ -14,7 +15,7 @@ router.get('/:id', asyncWrapper(async (req,res)=>{
    let plans = await plansService.findOne(id)
 }))
 
-router.post('/',asyncWrapper(async (req, res)=>{
+router.post('/', [validator('Plans')],asyncWrapper(async (req, res)=>{
   let plans = await plansService.create(req.body)
   res.send(plans)
 }))
