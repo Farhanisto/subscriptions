@@ -10,18 +10,18 @@ let validators = {
             default: Subscriptions.SubscriptionValidationSchema
         }
     },
-    "Plan": {
+    "Plans": {
         scopes: {
             default: Plan.PlanValidationSchema
         }
     },
 }
 
-function scopeExists(validotor, scope){
-    return Object.keys(validotor.scopes).find(key => key === scope) != undefined
+function scopeExists(validator, scope){
+    return Object.keys(validator.scopes).find(key => key === scope) != undefined
 }
 
-function getSchema(model, schema){
+function getSchema(model, scope){
     let validator = validators[model]
     if(!validator){
         throw new Error("validator doesnt exist")
@@ -45,14 +45,14 @@ function getSchema(model, schema){
     }
 }
 
-function validate(model, object, scope, ){
+function validate(model, object, scope){
      return Joi.validate(object, getSchema(model, scope), {
          allowUnknown: true
      })
 }
 
 //Actual factory
-module.exports = function ValidationMiddleware(model, scope){
+module.exports = function ValidationMiddleware(model, scope=null){
     return (req, res, next) =>{
         const validationResult = validate(model, req.body, scope);
         if (validationResult.error){
