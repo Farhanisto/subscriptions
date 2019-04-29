@@ -1,4 +1,19 @@
 const Joi = require("joi")
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Subscription = sequelize.define('Subscription', {
+    planId: DataTypes.INTEGER,
+    coupon: DataTypes.STRING,
+    cardNumber: DataTypes.STRING,
+    holderName: DataTypes.STRING,
+    expirationDate: DataTypes.STRING,
+    cvv: DataTypes.STRING
+  }, {});
+  Subscription.associate = function(models) {
+    // associations can be defined here
+  };
+  return Subscription;
+};
 
 module.exports.SubscriptionValidationSchema = Joi.object().keys({
     planId: Joi.number().positive().required(),
