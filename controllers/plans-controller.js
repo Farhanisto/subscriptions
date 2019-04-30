@@ -18,7 +18,8 @@ router.get('/:id', asyncWrapper(async (req,res)=>{
 }))
 
 router.post('/', [validator('Plans')],asyncWrapper(async (req, res)=>{
-  let plans = await PlansService.create(req.body)
+  const plan = new PlansService()
+  let plans = await plan.create(req.body)
   res.send(plans)
 }))
 
